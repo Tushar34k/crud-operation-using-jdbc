@@ -1,0 +1,82 @@
+package demo;
+
+
+import java.util.*;
+
+import java.sql.ResultSet;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class Students {
+
+	public static void main(String[] args) throws ClassNotFoundException, SQLException {
+		// TODO Auto-generated method stub
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		System.out.println("driver register Sycessfully");
+		Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc", "root", "3412");
+		System.out.println("Connection created Sucefully");
+		Scanner sc=new Scanner(System.in);
+		for( ; ; )
+		{
+			System.out.println("1 create the database ,2 cretae the table,3 update ,4 featch,5 ");
+			int num=sc.nextInt(); 
+
+			switch(num)
+			{
+			   case 1:
+			   {
+				   PreparedStatement  ps=con.prepareStatement("create database JDBC");
+				   System.out.println("database created Succefully");
+				   ps.execute();
+				   break;
+			   }
+			   case 2:
+				   PreparedStatement ps=con.prepareStatement("create table tu12(id int,name varchar(13))");
+				   ps.execute();
+				   break;
+			   case 3:
+			   {
+				   PreparedStatement ps1=con.prepareStatement("insert into tu12(id,name) values(1,'tush')");
+				   
+			
+				   ps1.execute();
+				   
+			   }
+			   case 4:{
+				      PreparedStatement ps1=con.prepareStatement("update tu12 set name=? where id=?");
+				      String name=sc.next();
+				      ps1.setString(1, name);
+				      int id=sc.nextInt();
+				      ps1.setInt(2, id);
+				      System.out.println("values updated Sucefulyy");
+				      ps1.execute();
+				      
+			   }
+			   case 5:
+			   {
+				   PreparedStatement ps1=con.prepareStatement("select * from tu12");
+				   ResultSet rs=ps1.executeQuery();
+				   while(rs.next())
+				   {
+					   System.out.println(rs.getInt(1)+" "+rs.getString(2));
+					   
+				   }
+				       break;
+			   }
+				   case 6:
+				   {
+					   PreparedStatement ps1=con.prepareStatement("delete from tu12 where id=?");
+					   int id=sc.nextInt();
+					   ps1.setInt(1, id);
+					   ps1.execute();
+				   }
+			   
+			}
+		}
+	}
+
+}
